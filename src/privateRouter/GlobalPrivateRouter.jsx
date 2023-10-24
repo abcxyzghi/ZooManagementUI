@@ -20,7 +20,7 @@ function GlobalPrivateRouter() {
 
   const location = useLocation();
   if (!isLogin && !accessToken) {
-    return <Navigate to="/auth/signin" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
   return <Outlet />;
 }
