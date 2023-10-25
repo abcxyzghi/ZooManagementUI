@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SidebarAdmin from '../Component/SidebarAdmin';
 
 const API_URL = 'https://zouzoumanagement.xyz/api/v1/expert';
 const initialNewExpert = {
@@ -220,63 +221,80 @@ const ExpertManager = () => {
   };
 
   return (
-    <div>
-      <h1>Expert Manager</h1>
-      {adding ? (
-        <div>
-          <button onClick={() => setAdding(false)}>Cancel</button>
-          <button onClick={handleAddExpert}>Add</button>
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={newExpert.firstName}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={newExpert.lastName}
-            onChange={handleInputChange}
-          />
-          <input type="text" placeholder="Sex" name="sex" value={newExpert.sex} onChange={handleInputChange} />
-          <input
-            type="text"
-            placeholder="Start Day"
-            name="startDay"
-            value={newExpert.startDay}
-            onChange={handleInputChange}
-          />
-          <input type="text" placeholder="Email" name="email" value={newExpert.email} onChange={handleInputChange} />
-          <input
-            type="text"
-            placeholder="Phone Number"
-            name="phoneNumber"
-            value={newExpert.phoneNumber}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            placeholder="Area Name"
-            name="areaName"
-            value={newExpert.areaName}
-            onChange={handleInputChange}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={newExpert.password}
-            onChange={handleInputChange}
-          />
+    <div className="wrapper" style={{ height: '100vh' }}>
+      <div className="row" style={{ height: '100vh' }}>
+        <div className="col-2">
+          <SidebarAdmin current={'Expert'} />
         </div>
-      ) : (
-        <>
-          <button onClick={handleAddClick}>Add</button>
-          {renderTable()}
-        </>
-      )}
+        <div className=" col-10 d-flex justify-content-center" style={{ padding: '0 32px' }}>
+          <div className="col-12">
+            <div>
+              <h1>Expert Manager</h1>
+              {adding ? (
+                <div>
+                  <button onClick={() => setAdding(false)}>Cancel</button>
+                  <button onClick={handleAddExpert}>Add</button>
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    name="firstName"
+                    value={newExpert.firstName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={newExpert.lastName}
+                    onChange={handleInputChange}
+                  />
+                  <input type="text" placeholder="Sex" name="sex" value={newExpert.sex} onChange={handleInputChange} />
+                  <input
+                    type="text"
+                    placeholder="Start Day"
+                    name="startDay"
+                    value={newExpert.startDay}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="email"
+                    value={newExpert.email}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Phone Number"
+                    name="phoneNumber"
+                    value={newExpert.phoneNumber}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Area Name"
+                    name="areaName"
+                    value={newExpert.areaName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    value={newExpert.password}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              ) : (
+                <>
+                  <button onClick={handleAddClick}>Add</button>
+                  {renderTable()}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

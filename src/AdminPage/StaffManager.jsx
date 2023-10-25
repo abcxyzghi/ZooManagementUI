@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import staffApi from '../api/staffApi';
+import SidebarAdmin from '../Component/SidebarAdmin';
+import moment from 'moment';
 
 const API_URL = 'https://zouzoumanagement.xyz/api/v1/staff';
 
@@ -20,24 +22,13 @@ const StaffManager = () => {
   });
   const getAllStaff = async () => {
     try {
-      const res = staffApi.getAllStaff();
+      const res = await staffApi.getAllStaff();
       console.log(res);
+      setStaffData(res);
     } catch (error) {}
   };
 
   useEffect(() => {
-    axios
-      .get(API_URL)
-      .then((response) => {
-        const staffDataWithDefaultRole = response.data.map((staff) => ({
-          ...staff,
-          role: 'STAFF',
-        }));
-        setStaffData(staffDataWithDefaultRole);
-      })
-      .catch((error) => {
-        console.error('Lỗi khi tải dữ liệu nhân viên:', error);
-      });
     getAllStaff();
   }, []);
 
@@ -112,8 +103,8 @@ const StaffManager = () => {
       .put(`${API_URL}/${id}`, {
         firstName: updatedFirstName,
         lastName: updatedLastName,
-        sex: updatedSex,
-        startDay: updatedStartDay,
+        gender: updatedSex,
+        startDay: moment(updatedStartDay).format('MM/DD/YYYY'),
         phoneNumber: updatedPhoneNumber,
       })
       .then(() => {
@@ -178,7 +169,7 @@ const StaffManager = () => {
               </td>
               <td>
                 {editingId === staff.id ? (
-                  <input type="text" name="startDay" value={newStaff.startDay} onChange={handleInputChange} />
+                  <input type="date" name="startDay" value={newStaff.startDay} onChange={handleInputChange} />
                 ) : (
                   staff.startDay
                 )}
@@ -193,15 +184,15 @@ const StaffManager = () => {
               </td>
               <td>
                 {editingId === staff.id ? (
-                  <>
+                  <div className="d-flex gap-2">
                     <button onClick={() => handleSaveClick(staff.id)}>Save</button>
                     <button onClick={handleCancelClick}>Cancel</button>
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div className="d-flex gap-2">
                     <button onClick={() => handleEditClick(staff.id)}>Edit</button>
                     <button onClick={() => handleDeleteClick(staff.id)}>Delete</button>
-                  </>
+                  </div>
                 )}
               </td>
             </tr>
@@ -212,56 +203,73 @@ const StaffManager = () => {
   };
 
   return (
-    <div>
-      <h1>Staff Manager</h1>
-      {adding ? (
-        <div>
-          <button onClick={() => setAdding(false)}>Cancel</button>
-          <button onClick={handleAddStaff}>Add</button>
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={newStaff.firstName}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={newStaff.lastName}
-            onChange={handleInputChange}
-          />
-          <input type="text" placeholder="Sex" name="sex" value={newStaff.sex} onChange={handleInputChange} />
-          <input
-            type="text"
-            placeholder="Start Day"
-            name="startDay"
-            value={newStaff.startDay}
-            onChange={handleInputChange}
-          />
-          <input type="text" placeholder="Email" name="email" value={newStaff.email} onChange={handleInputChange} />
-          <input
-            type="text"
-            placeholder="Phone Number"
-            name="phoneNumber"
-            value={newStaff.phoneNumber}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            placeholder="Password"
-            name="password"
-            value={newStaff.password}
-            onChange={handleInputChange}
-          />
+    <div className="wrapper" style={{ height: '100vh' }}>
+      <div className="row" style={{ height: '100vh' }}>
+        <div className="col-2">
+          <SidebarAdmin current={'Staff'} />
         </div>
-      ) : (
-        <>
-          <button onClick={handleAddClick}>Add</button>
-          {renderTable()}
-        </>
-      )}
+        <div className=" col-10 d-flex justify-content-center" style={{ padding: '0 32px' }}>
+          <div className="col-12">
+            <div>
+              <h1>Staff Manager</h1>
+              {adding ? (
+                <div>
+                  <button onClick={() => setAdding(false)}>Cancel</button>
+                  <button onClick={handleAddStaff}>Add</button>
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    name="firstName"
+                    value={newStaff.firstName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={newStaff.lastName}
+                    onChange={handleInputChange}
+                  />
+                  <input type="text" placeholder="Sex" name="sex" value={newStaff.sex} onChange={handleInputChange} />
+                  <input
+                    type="text"
+                    placeholder="Start Day"
+                    name="startDay"
+                    value={newStaff.startDay}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="email"
+                    value={newStaff.email}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Phone Number"
+                    name="phoneNumber"
+                    value={newStaff.phoneNumber}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Password"
+                    name="password"
+                    value={newStaff.password}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              ) : (
+                <>
+                  <button onClick={handleAddClick}>Add</button>
+                  {renderTable()}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

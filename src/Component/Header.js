@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import authApi from '../api/authApi';
+import { TOKEN_INFO } from '../constants';
+import { useDispatch } from 'react-redux';
+import { logout } from '../slices/authSlice';
 
 function Header() {
   const headerStyle = {
@@ -14,13 +18,12 @@ function Header() {
   const logoStyle = {
     display: 'flex',
     alignItems: 'center',
-    
   };
 
   const logoImageStyle = {
     maxWidth: '100px',
     maxHeight: '50px',
-    borderRadius: '10px'
+    borderRadius: '10px',
   };
 
   const buttonContainerStyle = {
@@ -42,11 +45,13 @@ function Header() {
     const elems = document.querySelectorAll('.dropdown-trigger');
     window.M.Dropdown.init(elems, { constrainWidth: false });
   }, []);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <header style={headerStyle}>
       <div style={logoStyle}>
-        <img src='name.jpg' style={logoImageStyle} alt="Logo" />
+        <img src="name.jpg" style={logoImageStyle} alt="Logo" />
       </div>
       <div style={buttonContainerStyle}>
         <button style={buttonStyle}>Buy Now</button>
@@ -54,11 +59,28 @@ function Header() {
           Option<i className="material-icons right">arrow_drop_down</i>
         </a>
         <ul id="dropdown1" className="dropdown-content">
-          <li><Link to="/admin">Login admin</Link></li>
-          <li><Link to="/staff">Login staff</Link></li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
+          <li>
+            <Link to="/admin">Login admin</Link>
+          </li>
+          <li>
+            <Link to="/staff">Login staff</Link>
+          </li>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+          <li>
+            <Link to="/settings">Settings</Link>
+          </li>
         </ul>
+        <button
+          style={buttonStyle}
+          onClick={() => {
+            navigate('/login');
+            dispatch(logout());
+          }}
+        >
+          Logout
+        </button>
       </div>
     </header>
   );

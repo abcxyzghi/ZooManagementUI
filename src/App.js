@@ -36,8 +36,8 @@ function App() {
 
             {/* private router with role ADMIN */}
             <Route element={<CommonPrivateRouter targetRole={ROLE.ADMIN} />}>
-              <Route path="/admin" element={<Admin />}>
-                <Route path="" element={<HomeAdmin />} />
+              <Route path="/admin">
+                <Route path="" element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="staff-manager" element={<StaffManager />} />
                 <Route path="cages" element={<Cage />} />

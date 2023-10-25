@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SidebarAdmin from '../Component/SidebarAdmin';
 
 const API_URL = 'https://zouzoumanagement.xyz/api/v1/cage';
 
@@ -18,7 +19,8 @@ const Cage = () => {
   });
 
   useEffect(() => {
-    axios.get(API_URL)
+    axios
+      .get(API_URL)
       .then((response) => {
         const cageDataWithDefaultRole = response.data.map((cage) => ({
           ...cage,
@@ -35,7 +37,8 @@ const Cage = () => {
   };
 
   const handleDeleteClick = (id) => {
-    axios.delete(`${API_URL}/${id}`)
+    axios
+      .delete(`${API_URL}/${id}`)
       .then(() => {
         const updatedCageData = cageData.filter((cage) => cage.id !== id);
         setCageData(updatedCageData);
@@ -54,7 +57,8 @@ const Cage = () => {
   };
 
   const handleAddCage = () => {
-    axios.post(API_URL, newCage)
+    axios
+      .post(API_URL, newCage)
       .then(() => {
         setNewCage({
           name: '',
@@ -88,11 +92,12 @@ const Cage = () => {
     const updatedStaffEmail = newCage.staffEmail;
     const updatedName = newCage.cageName;
 
-    axios.put(`${API_URL}/${id}`, {
-      cageName: updatedName,
-      cageStatus: updatedCageStatus,
-      staffEmail: updatedStaffEmail,
-    })
+    axios
+      .put(`${API_URL}/${id}`, {
+        cageName: updatedName,
+        cageStatus: updatedCageStatus,
+        staffEmail: updatedStaffEmail,
+      })
       .then(() => {
         const updatedCageData = cageData.map((cage) => {
           if (cage.id === id) {
@@ -132,12 +137,30 @@ const Cage = () => {
           {cageData.map((cage) => (
             <tr key={cage.id}>
               <td>{cage.id}</td>
-              <td>{editingId === cage.id ? <input type="text" name="cageName" value={newCage.cageName} onChange={handleInputChange} /> : cage.name}</td>
+              <td>
+                {editingId === cage.id ? (
+                  <input type="text" name="cageName" value={newCage.cageName} onChange={handleInputChange} />
+                ) : (
+                  cage.name
+                )}
+              </td>
               <td>{cage.quantity}</td>
-              <td>{editingId === cage.id ? <input type="text" name="cageStatus" value={newCage.cageStatus} onChange={handleInputChange} /> : cage.cageStatus}</td>
+              <td>
+                {editingId === cage.id ? (
+                  <input type="text" name="cageStatus" value={newCage.cageStatus} onChange={handleInputChange} />
+                ) : (
+                  cage.cageStatus
+                )}
+              </td>
               <td>{cage.cageType}</td>
               <td>{cage.areaName}</td>
-              <td>{editingId === cage.id ? <input type="text" name="staffEmail" value={newCage.staffEmail} onChange={handleInputChange} /> : cage.staffEmail}</td>
+              <td>
+                {editingId === cage.id ? (
+                  <input type="text" name="staffEmail" value={newCage.staffEmail} onChange={handleInputChange} />
+                ) : (
+                  cage.staffEmail
+                )}
+              </td>
               <td>
                 {editingId === cage.id ? (
                   <>
@@ -159,24 +182,65 @@ const Cage = () => {
   };
 
   return (
-    <div>
-      <h1>Cage</h1>
-      {adding ? (
-        <div>
-          <button onClick={() => setAdding(false)}>Cancel</button>
-          <button onClick={handleAddCage}>Add</button>
-          <input type="text" placeholder="Name" name="cageName" value={newCage.cageName} onChange={handleInputChange} />
-          <input type="text" placeholder="Cage Status" name="cageStatus" value={newCage.cageStatus} onChange={handleInputChange} />
-          <input type="text" placeholder="Cage Type" name="cageType" value={newCage.cageType} onChange={handleInputChange} />
-          <input type="text" placeholder="Area Name" name="areaName" value={newCage.areaName} onChange={handleInputChange} />
-          <input type="text" placeholder="Staff Email" name="staffEmail" value={newCage.staffEmail} onChange={handleInputChange} />
+    <div className="wrapper" style={{ height: '100vh' }}>
+      <div className="row" style={{ height: '100vh' }}>
+        <div className="col-2">
+          <SidebarAdmin current={'Cages'} />
         </div>
-      ) : (
-        <>
-          <button onClick={handleAddClick}>Add</button>
-          {renderTable()}
-        </>
-      )}
+        <div className=" col-10 d-flex justify-content-center" style={{ padding: '0 32px' }}>
+          <div className="col-12">
+            <div>
+              <h1>Cage</h1>
+              {adding ? (
+                <div>
+                  <button onClick={() => setAdding(false)}>Cancel</button>
+                  <button onClick={handleAddCage}>Add</button>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    name="cageName"
+                    value={newCage.cageName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Cage Status"
+                    name="cageStatus"
+                    value={newCage.cageStatus}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Cage Type"
+                    name="cageType"
+                    value={newCage.cageType}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Area Name"
+                    name="areaName"
+                    value={newCage.areaName}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Staff Email"
+                    name="staffEmail"
+                    value={newCage.staffEmail}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              ) : (
+                <>
+                  <button onClick={handleAddClick}>Add</button>
+                  {renderTable()}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

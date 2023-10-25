@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { TOKEN_INFO } from '../constants/index';
+import authApi from './authApi';
 
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#request-config` for the full list of configs
@@ -10,7 +11,6 @@ const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL || '',
   headers: {
     'Content-Type': 'application/json',
-    Origin: 'http://localhost:3000',
   },
 });
 
@@ -51,6 +51,7 @@ axiosClient.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem(TOKEN_INFO.refreshToken) || '';
         if (refreshToken !== '') {
+          authApi.refreshToken(refreshToken);
         }
       } catch (err) {
         console.log(err);
